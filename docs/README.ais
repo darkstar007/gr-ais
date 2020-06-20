@@ -1,3 +1,5 @@
+Might now work with GnuRadio 3.8
+
 This is the ais-write-a-block package meant as a guide to building
 out-of-tree packages. To use the ais blocks, the Python namespaces
 is in 'ais', which is imported as:
