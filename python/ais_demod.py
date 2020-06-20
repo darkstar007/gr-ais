@@ -17,7 +17,7 @@ from gnuradio import digital
 from gnuradio import analog
 import math
 import ais
-import gmsk_sync
+from . import gmsk_sync
 import random
 class ais_demod(gr.hier_block2):
     def __init__(self, options):

@@ -21,9 +21,10 @@
 # Setup library
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
+find_package(Gnuradio "3.8" REQUIRED COMPONENTS fft blocks filter)
 
-include_directories(${Boost_INCLUDE_DIR})
-link_directories(${Boost_LIBRARY_DIRS})
+#include_directories(${Boost_INCLUDE_DIR})
+#link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND ais_sources
     freqest_impl.cc
     invert_impl.cc
@@ -40,7 +41,11 @@ if(NOT ais_sources)
 endif(NOT ais_sources)
 
 add_library(gnuradio-ais SHARED ${ais_sources})
-target_link_libraries(gnuradio-ais ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES})
+target_link_libraries(gnuradio-ais gnuradio::gnuradio-runtime gnuradio::gnuradio-filter )
+target_include_directories(gnuradio-ais
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+    PUBLIC $<INSTALL_INTERFACE:include>
+  )
 set_target_properties(gnuradio-ais PROPERTIES DEFINE_SYMBOL "gnuradio_ais_EXPORTS")
 
 if(APPLE)
@@ -52,16 +57,23 @@ endif(APPLE)
 ########################################################################
 # Install built library files
 ########################################################################
-install(TARGETS gnuradio-ais
-    LIBRARY DESTINATION lib${LIB_SUFFIX} # .so/.dylib file
-    ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
-    RUNTIME DESTINATION bin              # .dll file
-)
+########################################################################
+include(GrMiscUtils)
+GR_LIBRARY_FOO(gnuradio-ais)
+
+########################################################################
+# Print summary
+########################################################################
+message(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Building for version: ${VERSION} / ${LIBVER}")
+
 
 ########################################################################
 # Build and register unit test
 ########################################################################
 include(GrTest)
+
+FIND_PACKAGE(CppUnit REQUIRED)
 
 include_directories(${CPPUNIT_INCLUDE_DIRS})
 
@@ -74,8 +86,8 @@ add_executable(test-ais ${test_ais_sources})
 
 target_link_libraries(
   test-ais
-  ${GNURADIO_RUNTIME_LIBRARIES}
-  ${GNURADIO_FILTER_LIBRARIES}
+  gnuradio::gnuradio-runtime
+  gnuradio::gnuradio-filter
   ${Boost_LIBRARIES}
   ${CPPUNIT_LIBRARIES}
   gnuradio-ais

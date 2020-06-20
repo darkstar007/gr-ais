@@ -38,13 +38,13 @@ from gnuradio import trellis
 # to base 'base' (most significant symbol first).
 ######################################################################
 def dec2base(num,base,l):
-    s=range(l)
+    s=list(range(l))
     n=num
     for i in range(l):
         s[l-i-1]=n%base
         n=int(n/base)
     if n!=0:
-        print 'Number ', num, ' requires more than ', l, 'digits.'
+        print('Number ', num, ' requires more than ', l, 'digits.')
     return s
 
 
@@ -81,7 +81,7 @@ def make_isi_lookup(mod,channel,normalize):
         for i in range(len(channel)):
             channel[i] = channel[i]/math.sqrt(p)
 
-    lookup=range(len(constellation)**len(channel))
+    lookup=list(range(len(constellation)**len(channel)))
     for o in range(len(constellation)**len(channel)):
         ss=dec2base(o,len(constellation),len(channel))
         ll=0

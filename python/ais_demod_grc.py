@@ -48,7 +48,7 @@ class ais_demod_grc(grc_wxgui.top_block_gui):
 			y_axis_label="Counts",
 		)
 		self.Add(self.wxgui_scopesink2_2.win)
-		self.random_source_x_0 = gr.vector_source_b(map(int, numpy.random.randint(0, 2, 1000)), True)
+		self.random_source_x_0 = gr.vector_source_b(list(map(int, numpy.random.randint(0, 2, 1000))), True)
 		self.gr_throttle_0 = gr.throttle(gr.sizeof_gr_complex*1, samp_rate*sps)
 		self.gr_quadrature_demod_cf_0 = gr.quadrature_demod_cf(1)
 		self.gr_map_bb_0 = gr.map_bb(([-1, 1]))

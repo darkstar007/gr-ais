@@ -31,9 +31,9 @@ try:
     from dl import RTLD_GLOBAL as _RTLD_GLOBAL
 except ImportError:
     try:
-	from DLFCN import RTLD_GLOBAL as _RTLD_GLOBAL
+        from DLFCN import RTLD_GLOBAL as _RTLD_GLOBAL
     except ImportError:
-	pass
+        pass
     
 if _RTLD_GLOBAL != 0:
     _dlopenflags = sys.getdlopenflags()
@@ -42,11 +42,11 @@ if _RTLD_GLOBAL != 0:
 
 
 # import swig generated symbols into the gr_ais namespace
-from ais_swig import *
+from .ais_swig import *
 #import fsm_utils
-import gmsk_sync
-from ais_demod import ais_demod
-import radio
+from . import gmsk_sync
+from .ais_demod import ais_demod
+from . import radio
 
 # ----------------------------------------------------------------
 # Tail of workaround
